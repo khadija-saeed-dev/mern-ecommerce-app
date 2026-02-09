@@ -16,6 +16,12 @@ app.use(cors());
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log(" Local MongoDB connected"))
   .catch(err => console.log(" MongoDB error:", err.message));
+
+
+
+
+
+
   
 //1): creating API
 app.get('/', (req, res) => {
