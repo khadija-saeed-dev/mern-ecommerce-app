@@ -1,0 +1,12 @@
+import React, { useContext } from 'react'
+import CartItems from '../Component/CartItems'
+
+const Cart = () => {
+  return (
+    <div  className=''>
+       <CartItems/>
+    </div>
+  )
+}
+
+export default Cart
