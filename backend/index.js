@@ -1,3 +1,4 @@
+require('dotenv').config(); // loads environment variables from .env
 const port = process.env.PORT || 4000;
 const express = require('express');
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 //2): Database connection with local mongodb
-mongoose.connect("mongodb://127.0.0.1:27017/ecommerce")
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log(" Local MongoDB connected"))
   .catch(err => console.log(" MongoDB error:", err.message));
   
@@ -204,7 +205,7 @@ app.post('/login' , async(req,res)=>{
                 }
             }
              // now  genrate the Token and create one layer encrypted salt so that the data will remains the secure 
-           const token = jwt.sign(data,'secret_ecom')
+           const token = jwt.sign(data, process.env.JWT_SECRET)
            res.json({
             success:true,
             token
@@ -256,7 +257,7 @@ const fetchuser = async(req , res, next)=>{
     // aagar token theek howa too token verify karooo and decoded using salt
     else{
         try{
-            const data=jwt.verify(token, 'secret_ecom')
+            const data=jwt.verify(token,  process.env.JWT_SECRET)
             // data k under jo id store hai jo auth-token say aaye hai us ko req.user mai save karwa do 
             req.user=data.user;
             next();
