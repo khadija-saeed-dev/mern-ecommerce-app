@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log(" Local MongoDB connected"))
   .catch(err => console.log(" MongoDB error:", err.message));
 
-
+// chatgpt version of mongodb Atlas
 
 
 
@@ -28,25 +28,38 @@ app.get('/', (req, res) => {
   res.send('express is running ');
 });
 
-//4): IMAGE storage Enigin (1):
-const storage=multer.diskStorage({
-    destination:'./upload/images',
-    filename:(req,file,cb)=>{
-        return cb(null ,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
- //(2) pass the above configuration in multer storage or is ko multer middleware bhi bolte hain
-    const upload=multer({storage:storage})
+// //4): IMAGE storage Enigin (1):
+// const storage=multer.diskStorage({
+//     destination:'./upload/images',
+//     filename:(req,file,cb)=>{
+//         return cb(null ,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+//     }
+// })
+//  //(2) pass the above configuration in multer storage or is ko multer middleware bhi bolte hain
+//     const upload=multer({storage:storage})
 
-    //(4) middleware for multer
-    app.use('/images',express.static('upload/images'))
-//(3) kue k hum ko browser pr show kr na hai to post req say aak image upload ka route banayen gye 
- app.post('/upload',upload.single('product') ,(req,res)=>{
-    res.json({
-        success:1,
-        image_url:`http://localhost:${port}/images/${req.file.filename}`
-    })
- })
+//     //(4) middleware for multer
+//     app.use('/images',express.static('upload/images'))
+// //(3) kue k hum ko browser pr show kr na hai to post req say aak image upload ka route banayen gye 
+//  app.post('/upload',upload.single('product') ,(req,res)=>{
+//     res.json({
+//         success:1,
+//         image_url:`http://localhost:${port}/images/${req.file.filename}`
+//     })
+//  })
+
+
+// 4): chatgpt version for cloudinary instead of multer
+
+const upload = require("./middleware/upload"); // Cloudinary middleware
+
+app.post("/upload", upload.single("product"), (req, res) => {
+  res.json({
+    success: 1,
+    image_url: req.file.path, // Cloudinary URL
+  });
+});
+
 
 
 
@@ -330,3 +343,17 @@ app.listen(port, (error) => {
     }
  
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
